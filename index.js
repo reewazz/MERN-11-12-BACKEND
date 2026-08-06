@@ -1,17 +1,20 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import Blog from './model/Blog.js'
+import Category from './model/Category.js'
+import dotenv from "dotenv"
 
 const app = express()
 
 app.use(express.json())
 
+dotenv.config()
 
 
 const connectDB = async()=> {
  try {
    console.log("connecting to databasee......")
- const connection = await mongoose.connect('mongodb+srv://reewazzneup_db_user:jWd12WMMdhf9gEeS@mern-11-12.rg3k4ln.mongodb.net/?appName=MERN-11-12')
+ const connection = await mongoose.connect(process.env.DB_URL)
 console.log("successfully connected to database")
  }
  catch (error) {
@@ -1313,6 +1316,12 @@ app.post("/blog/create",async(req,res)=>{
 
   const newBlog = await Blog.create(req.body)
     res.json(newBlog)
+})
+
+app.post("/category/create",async(req,res)=>{
+
+  const newCategory = await Category.create(req.body)
+    res.json(newCategory)
 })
 
 

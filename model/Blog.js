@@ -11,9 +11,10 @@ const blogSchema = new Schema({
     category : String,
     likes : Number,
     status : Boolean,
-    author : String
+    author : String,
+  
 
-});
+} ,  { timestamps: true });
 
 const Blog = mongoose.model('Blog', blogSchema);
 
