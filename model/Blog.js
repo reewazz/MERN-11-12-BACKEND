@@ -12,6 +12,7 @@ const blogSchema = new Schema({
     likes : Number,
     status : Boolean,
     author : String,
+    image : String
   
 
 } ,  { timestamps: true });

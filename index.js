@@ -3,31 +3,19 @@ import mongoose from "mongoose";
 import Blog from "./model/Blog.js";
 import Category from "./model/Category.js";
 import dotenv from "dotenv";
+import cors from "cors"
 
 const app = express();
 
 app.use(express.json());
+app.use(cors())
 
 dotenv.config();
-
-const connectDB = async () => {
-  try {
-    console.log("connecting to databasee......");
-    const connection = await mongoose.connect(process.env.DB_URL);
-    console.log("successfully connected to database");
-  } catch (error) {
-    console.error(error);
-  } finally {
-    console.log("final statement");
-  }
-};
-
-connectDB();
 
 const products = [
   {
     id: 1,
-    title: "Essence Mascara Lash Princess",
+    title: "Only mascara",
     description:
       "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
     category: "beauty",
@@ -1279,6 +1267,22 @@ const products = [
   },
 ];
 
+const connectDB = async () => {
+  try {
+    console.log("connecting to databasee......");
+    const connection = await mongoose.connect(process.env.DB_URL);
+    console.log("successfully connected to database");
+  } catch (error) {
+    console.error(error);
+  } finally {
+    console.log("final statement");
+  }
+};
+
+connectDB();
+
+
+
 app.get("/", (req, res) => {
   res.send("Hello World !!!");
 });
@@ -1293,6 +1297,14 @@ app.post("/blog/create", async (req, res) => {
   res.json(newBlog);
 });
 
+
+app.put("/blog/update/:id", async (req, res) => {
+  const {id} = req.params
+  const newValue = req.body
+  const newBlog = await Blog.findByIdAndUpdate(id,newValue,{new:true})
+  res.json(newBlog);
+});
+
 app.get("/blog/getAll", async (req, res) => {
 try{
     const allBlogs = await Blog.find();
@@ -1303,6 +1315,31 @@ catch (err) {
   
 }
 });
+
+
+
+app.get("/blog/getById/:id", async (req, res) => {
+try{
+
+  const {id} = req.params
+    const singleBlog = await Blog.findById(id)
+
+  if(!singleBlog) {
+    return res.status(404).json({
+      message : "Blog not found"
+    })
+  }
+
+  res.status(200).json(singleBlog);
+}
+catch (err) {
+  console.error(err)
+  
+}
+});
+
+
+
 
 app.delete("/blog/delete/:id", async (req, res) => {
   try {
