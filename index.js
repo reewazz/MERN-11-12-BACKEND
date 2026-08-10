@@ -4,6 +4,9 @@ import Blog from "./model/Blog.js";
 import Category from "./model/Category.js";
 import dotenv from "dotenv";
 import cors from "cors"
+import { CreateBlog, getAllBlogs, UpdateBlog } from "./controllers/blogControllers.js";
+import { connectDB } from "./config/db.js";
+import blogRoutes from "./routes/blogRoutes.js"
 
 const app = express();
 
@@ -1267,17 +1270,7 @@ const products = [
   },
 ];
 
-const connectDB = async () => {
-  try {
-    console.log("connecting to databasee......");
-    const connection = await mongoose.connect(process.env.DB_URL);
-    console.log("successfully connected to database");
-  } catch (error) {
-    console.error(error);
-  } finally {
-    console.log("final statement");
-  }
-};
+
 
 connectDB();
 
@@ -1286,28 +1279,9 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("Hello World !!!");
 });
-
-app.post("/hello", (req, res) => {
-  console.log(req.body);
-  res.json(req.body.age);
-});
-
-app.post("/blog/create", async (req, res) => {
-  const newBlog = await Blog.create(req.body);
-  res.json(newBlog);
-});
-
-
-app.put("/blog/update/:id", async (req, res) => {
-  const {id} = req.params
-  const newValue = req.body
-  const newBlog = await Blog.findByIdAndUpdate(id,newValue,{new:true})
-  res.json(newBlog);
-});
-
-app.get("/blog/getAll", async (req, res) => {
+app.get("/category/getAll", async(req, res) => {
 try{
-    const allBlogs = await Blog.find();
+    const allBlogs = await Category.find()
   res.status(200).json(allBlogs);
 }
 catch (err) {
@@ -1315,6 +1289,14 @@ catch (err) {
   
 }
 });
+
+app.post("/hello", (req, res) => {
+  console.log(req.body);
+  res.json(req.body.age);
+});
+
+
+app.use("/blog",blogRoutes)
 
 
 

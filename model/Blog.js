@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 const { Schema } = mongoose;
 
 const blogSchema = new Schema({
@@ -8,7 +8,10 @@ const blogSchema = new Schema({
         required : true
     },
     description : String,
-    category : String,
+    category : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref : "Category"
+    },
     likes : Number,
     status : Boolean,
     author : String,
