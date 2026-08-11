@@ -7,6 +7,7 @@ import cors from "cors"
 import { CreateBlog, getAllBlogs, UpdateBlog } from "./controllers/blogControllers.js";
 import { connectDB } from "./config/db.js";
 import blogRoutes from "./routes/blogRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
 
 const app = express();
 
@@ -1297,6 +1298,7 @@ app.post("/hello", (req, res) => {
 
 
 app.use("/blog",blogRoutes)
+app.use("/user",userRoutes)
 
 
 
