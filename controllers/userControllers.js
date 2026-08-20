@@ -1,5 +1,12 @@
 import User from "../model/User.js";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+
+
+dotenv.config();
+
+export const JWT_SECRET = process.env.JWT_SECRET
 
  export const CreateUser =  async (req, res) => {
 try {
@@ -40,8 +47,15 @@ export const login = async (req,res)=> {
 
     }
 
+    const token = jwt.sign({
+      id : existingUser.id,
+      email : existingUser.email
+    },JWT_SECRET, {expiresIn: "1d"})
+
+
     return res.json ({
-        message : "Logged in sucessfully"
+        message : "Logged in sucessfully",
+        token : token
     })
 
 

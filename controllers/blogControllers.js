@@ -2,7 +2,10 @@ import Blog from "../model/Blog.js";
 
  export const CreateBlog =  async (req, res) => {
 try {
-    const newBlog = await Blog.create(req.body);
+  console.log(req.file)
+
+  const imageName =req.file.filename
+    const newBlog = await Blog.create({...req.body,image:imageName});
   res.json(newBlog);
 }
 catch(err) {

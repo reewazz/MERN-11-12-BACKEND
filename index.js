@@ -8,8 +8,24 @@ import { CreateBlog, getAllBlogs, UpdateBlog } from "./controllers/blogControlle
 import { connectDB } from "./config/db.js";
 import blogRoutes from "./routes/blogRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import { verifyToken } from "./middleware/authMiddleware.js";
+import multer from "multer"
+import { upload } from "./config/file.js";
+import path from "path"
+import { fileURLToPath } from "url";
+
+
+
+
 
 const app = express();
+
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 app.use(cors())
@@ -1275,6 +1291,13 @@ const products = [
 
 connectDB();
 
+
+
+
+app.post('/uploadfile', upload.single('image'), function (req, res, next) {
+  console.log(req.file)
+  res.send("function has worked")
+})
 
 
 app.get("/", (req, res) => {
