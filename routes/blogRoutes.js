@@ -7,7 +7,7 @@ const router = express.Router()
 
 
 router.get("/getAll", getAllBlogs);
-router.post("/create",upload.single("blogImage"), CreateBlog);
+router.post("/create",upload.array('photos', 3), CreateBlog);
 
 
 router.put("/update/:id", UpdateBlog);

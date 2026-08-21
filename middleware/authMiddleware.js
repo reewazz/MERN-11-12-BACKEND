@@ -4,10 +4,6 @@ export const verifyToken = async(req,res,next)=> {
 
    try{
      const header = req.headers.authorization
-
-
-  
-
       const token = header.split(" ")[1];
 
      const isMatch = jwt.verify(token,JWT_SECRET)
